@@ -1,6 +1,6 @@
 #define NUMFRAMES 256
 #define NUMPAGES 256
-#define	PAGESIZE 256
+#define	PAGESIZE 4096
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +17,7 @@ typedef struct address{
 typedef struct pagemeta{
 	int isFree;
 	int threadId;
-	void* simulatedAddress;   //address of beginning of the page.
+	void* pageAddress;   //address of beginning of the page.
 } pagemeta;
 
 
@@ -27,6 +27,6 @@ void extractor(address* a);
 void initPageTable(void);
 void getValue(address* a);
 
-void formatSimulatedMemory(void)；
-int isMemoryFull(void)
-void* requestForFreePage(int threadId)
+void formatSimulatedMemory(void);
+int isMemoryFull(void);
+void* requestForFreePage(int threadId);
