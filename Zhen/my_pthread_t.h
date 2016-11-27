@@ -5,7 +5,11 @@
 #include <ucontext.h>
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h>
 
+#define NUMFRAMES 256
+#define NUMPAGES 256
+#define	PAGESIZE 4096
 #define MEM 64000
 #define MAX_THREADS 10
 #define MAX_PAGES_SWAPPED 1000
@@ -30,6 +34,21 @@ typedef struct {
 	clock_t starttime;
 	
 }pthread;
+
+typedef struct address{
+	int logAddr;	//logical address found in text file
+	int pagenum;	//page number (bits 8-15)
+	int offset;	//offset (bits 0-7)
+	int physAddr;
+	int value;
+} address;
+
+
+typedef struct pagemeta{
+	int isFree;
+	int threadId;
+	void* pageAddress;   //address of beginning of the page.
+} pagemeta;
 
 extern int finished;
 extern int numthreads;
@@ -70,3 +89,12 @@ void* init_memory();
 extern void* myallocate(size_t x, char* file, int line, int threadReq);
 extern void mydeallocate(void* x, char* file, int line, int threadReq);
 
+void backingStore(address* a);
+void pageTableLookup(address* a);
+void extractor(address* a);
+void initPageTable(void);
+void getValue(address* a);
+
+void formatSimulatedMemory(void);
+int isMemoryFull(void);
+void* requestForFreePage(int threadId);
