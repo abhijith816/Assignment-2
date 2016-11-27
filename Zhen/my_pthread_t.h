@@ -44,11 +44,11 @@ typedef struct address{
 } address;
 
 
-typedef struct pagemeta{
+typedef struct pageMetaData{
 	int isFree;
 	int threadId;
 	void* pageAddress;   //address of beginning of the page.
-} pagemeta;
+} pageMetaData;
 
 extern int finished;
 extern int numthreads;

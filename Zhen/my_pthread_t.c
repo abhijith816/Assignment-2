@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <sys/time.h>
-#include<malloc.h>
-#include<unistd.h>
+#include <malloc.h>
+#include <unistd.h>
 #include "my_pthread_t.h"
 
 #define RUNTIME 25000
@@ -418,7 +418,8 @@ void mydeallocate(void* data_ptr, char* file, int line, int threadReq){
 
 //Building mapping from physical address to virtual address(Pagelize)
 void formatSimulatedMemory(void){
-	for (int i = 0; i < NUMPAGES; ++i)
+	int i;
+	for (i = 0; i < NUMPAGES; ++i)
 	{
 		pageAddress[i]=myallocate(PAGESIZE, __FILE__, __LINE__, LIBRARYREQ);
 		pageMetaDataArr[i].isFree=0;
@@ -428,7 +429,8 @@ void formatSimulatedMemory(void){
 }
 
 int isMemoryFull(void){
-	for(int i=0;i<NUMPAGES;i++){
+	int i;
+	for(i = 0; i<NUMPAGES; i++){
 		if (pageMetaDataArr[i].isFree==1)
 		{
 			return 0;
@@ -438,11 +440,12 @@ int isMemoryFull(void){
 }
 
 void* requestForFreePage(int threadId){
+	int i;
 	if(isMemoryFull()==1){						//if memory is full
 		return NULL;                                
 	}
 
-	for(int i=0;i<PAGESIZE;i++){
+	for(i=0;i<PAGESIZE;i++){
 		if(pageMetaDataArr[i].isFree==1){
 			pageMetaDataArr[i].isFree=0;
 			pageMetaDataArr[i].threadId=threadId;
