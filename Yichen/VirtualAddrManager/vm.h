@@ -14,8 +14,19 @@ typedef struct address{
 } address;
 
 
+typedef struct pagemeta{
+	int isFree;
+	int threadId;
+	void* simulatedAddress;   //address of beginning of the page.
+} pagemeta;
+
+
 void backingStore(address* a);
 void pageTableLookup(address* a);
 void extractor(address* a);
 void initPageTable(void);
 void getValue(address* a);
+
+void formatSimulatedMemory(void)；
+int isMemoryFull(void)
+void* requestForFreePage(int threadId)

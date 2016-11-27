@@ -4,6 +4,8 @@ int pageTable[NUMPAGES];
 int physMem[NUMFRAMES][PAGESIZE];
 int pageFault=0;
 int frameNum=0;
+void* pageAddress[NUMPAGES];   //This record address of simulated 
+pagemeta pagemetaArr[NUMPAGES];
 
 void initPageTable(void){
 	int i;
@@ -44,4 +46,39 @@ void backingStore(address *a){
 // Reads the value from the physical memory that corresponds to the logical address
 void getValue(address* a){
 	a->value=physMem[pageTable[a->pagenum]][ a->offset ];//Read the value from physical memory
+}
+
+//Building mapping from physical address to virtual address(Pagelize)
+void formatSimulatedMemory(void){
+	for (int i = 0; i < NUMPAGES; ++i)
+	{
+		pageAddress[i]=malloc(PAGESIZE);
+		pagemetaArr[i].isFree=0;
+		pagemetaArr[i].threadId=-1;
+		pagemetaArr[i].simulatedAddress=pageAddress[i];
+	}
+}
+
+int isMemoryFull(void){
+	for(int i=0;i<NUMPAGES;i++){
+		if (pagemetaArr[i].isFree==1)
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void* requestForFreePage(int threadId){
+	if(isMemoryFull==1){						//if memory is full
+		return NULL;                                
+	}
+
+	for(int i=0;i<PAGESIZE;i++){
+		if(pagemetaArr[i].isFree==1){
+			pagemetaArr[i].isFree=0;
+			pagemetaArr[i].threadId=threadId;
+		}
+	}
+	return pagemetaArr[i].simulatedAddress;
 }
