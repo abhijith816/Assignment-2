@@ -420,7 +420,7 @@ void mydeallocate(void* data_ptr, char* file, int line, int threadReq){
 void formatSimulatedMemory(void){
 	for (int i = 0; i < NUMPAGES; ++i)
 	{
-		pageAddress[i]=malloc(PAGESIZE);
+		pageAddress[i]=myallocate(PAGESIZE, __FILE__, __LINE__, LIBRARYREQ);
 		pageMetaDataArr[i].isFree=0;
 		pageMetaDataArr[i].threadId=-1;
 		pageMetaDataArr[i].pageAddress=pageAddress[i];
